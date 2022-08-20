@@ -5,15 +5,22 @@ import { ThemeProvider } from 'styled-components'
 import GlobalStyle from '../styles/reset'
 import theme from '../styles/theme'
 import Gnb from '@components/common/Gnb'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
 
 function MyApp({ Component, pageProps }: AppProps) {
- console.log('djfladjskl')
+ const [queryClient] = useState(() => new QueryClient())
+
  return (
-  <ThemeProvider theme={theme}>
-   <GlobalStyle />
-   <Gnb />
-   <Component {...pageProps} />
-  </ThemeProvider>
+  <QueryClientProvider client={queryClient}>
+   <Hydrate state={pageProps.dehydratedState}>
+    <ThemeProvider theme={theme}>
+     <GlobalStyle />
+     <Gnb />
+     <Component {...pageProps} />
+    </ThemeProvider>
+   </Hydrate>
+  </QueryClientProvider>
  )
 }
 
