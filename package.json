@@ -10,18 +10,9 @@
   "lint:custom": "eslint pages/** --ext .ts,.tsx",
   "lint:fix": "eslint pages/** --ext .ts,.tsx --fix",
   "prettier": "prettier --write pages/**/*.{ts,tsx}",
-  "test": "NODE_ENV=test jest --watchAll"
- },
- "lint-staged": {
-  "pages/**/*.{ts,tsx}": [
-   "eslint --fix",
-   "prettier --write"
-  ]
- },
- "husky": {
-  "hooks": {
-   "pre-commit": "lint-staged"
-  }
+  "test": "NODE_ENV=test jest --watchAll",
+  "prepare": "husky install",
+  "pre-commit": "next lint --fix && git add -A ."
  },
  "dependencies": {
   "next": "12.2.4",
