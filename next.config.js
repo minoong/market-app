@@ -13,6 +13,9 @@ const nextConfig = {
    ssr: true,
   },
  },
+ eslint: {
+  dirs: ['pages', 'hooks'],
+ },
 }
 
 module.exports = nextConfig
