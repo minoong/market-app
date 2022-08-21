@@ -14,7 +14,7 @@ const nextConfig = {
   },
  },
  eslint: {
-  dirs: ['pages', 'hooks'],
+  dirs: ['pages', 'hooks', 'features'],
  },
 }
 
