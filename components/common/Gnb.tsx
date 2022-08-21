@@ -1,18 +1,21 @@
 import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
+import NavLink from './NavLink'
 
 const GnbBlock = styled.article`
  header {
   nav {
    width: 100vw;
-   background-color: red;
+   background-color: #006eff;
 
    div {
     display: flex;
     justify-content: space-between;
 
     section {
+     padding: 1rem;
+
      &:first-child {
       margin-left: 2rem;
      }
@@ -20,9 +23,6 @@ const GnbBlock = styled.article`
       margin-right: 2rem;
      }
      a {
-      text-decoration: none;
-      color: white;
-
       &:not(:last-child) {
        margin-right: 2rem;
       }
@@ -40,9 +40,9 @@ function Gnb() {
     <nav>
      <div>
       <section>
-       <Link href="/exchange">거래소</Link>
-       <Link href="/balances">입출금</Link>
-       <Link href="/investments/balances">거래내역</Link>
+       <NavLink href={{ pathname: '/exchange', query: { id: 5 } }}>거래소</NavLink>
+       <NavLink href="/balances">입출금</NavLink>
+       <NavLink href="/investments/balances">거래내역</NavLink>
       </section>
       <section>
        <Link href="/login">로그인</Link>
