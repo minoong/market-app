@@ -8,8 +8,6 @@ const GlobalStyle = createGlobalStyle`
     height: 100vh;
   }
 
-  body { background-color: dodgerblue; }
-
   *, *::before, *::after {
     box-sizing: border-box;
   }
