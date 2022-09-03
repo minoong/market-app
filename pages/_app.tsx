@@ -8,20 +8,24 @@ import Gnb from '@components/common/Gnb'
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
 import { wrapper } from '@features/store'
+import client from '../apollo-client'
+import { ApolloProvider } from '@apollo/client'
 
 function MyApp({ Component, pageProps }: AppProps) {
  const [queryClient] = useState(() => new QueryClient())
 
  return (
-  <QueryClientProvider client={queryClient}>
-   <Hydrate state={pageProps.dehydratedState}>
-    <ThemeProvider theme={theme}>
-     <GlobalStyle />
-     <Gnb />
-     <Component {...pageProps} />
-    </ThemeProvider>
-   </Hydrate>
-  </QueryClientProvider>
+  <ApolloProvider client={client}>
+   <QueryClientProvider client={queryClient}>
+    <Hydrate state={pageProps.dehydratedState}>
+     <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Gnb />
+      <Component {...pageProps} />
+     </ThemeProvider>
+    </Hydrate>
+   </QueryClientProvider>
+  </ApolloProvider>
  )
 }
 
