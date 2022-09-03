@@ -12,12 +12,15 @@
   "prettier": "prettier --write pages/**/*.{ts,tsx}",
   "test": "NODE_ENV=test jest --watchAll",
   "prepare": "husky install",
-  "pre-commit": "next lint --fix"
+  "pre-commit": "next lint --fix",
+  "graphql:codegen": "graphql-codegen --config codegen.yml"
  },
  "dependencies": {
+  "@apollo/client": "^3.6.9",
   "@reduxjs/toolkit": "^1.8.5",
   "@tanstack/react-query": "^4.2.1",
   "axios": "^0.27.2",
+  "graphql": "^16.6.0",
   "next": "12.2.4",
   "next-redux-wrapper": "^7.0.5",
   "react": "18.2.0",
@@ -27,6 +30,13 @@
   "styled-reset": "^4.4.2"
  },
  "devDependencies": {
+  "@graphql-codegen/cli": "2.12.0",
+  "@graphql-codegen/gql-tag-operations-preset": "^1.5.5",
+  "@graphql-codegen/introspection": "2.2.1",
+  "@graphql-codegen/typescript": "2.7.3",
+  "@graphql-codegen/typescript-msw": "^1.1.3",
+  "@graphql-codegen/typescript-operations": "2.5.3",
+  "@graphql-codegen/typescript-react-apollo": "3.3.3",
   "@testing-library/jest-dom": "^5.16.5",
   "@testing-library/react": "^13.3.0",
   "@types/jest": "^28.1.7",
@@ -35,6 +45,7 @@
   "@types/react-dom": "18.0.6",
   "@types/styled-components": "^5.1.26",
   "@typescript-eslint/eslint-plugin": "^5.33.0",
+  "apollo": "^2.34.0",
   "autoprefixer": "^10.4.8",
   "babel-plugin-styled-components": "^2.0.7",
   "eslint": "8.21.0",
