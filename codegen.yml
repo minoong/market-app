@@ -1,12 +1,12 @@
 overwrite: true
-schema: "https://graphqlzero.almansi.me/api"
-documents: "pages/**/*.tsx"
+schema: 'https://graphqlzero.almansi.me/api'
+# documents: "pages/**/*.tsx"
 generates:
-  generated/graphql.ts:
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
-  ./graphql.schema.json:
-    plugins:
-      - "introspection"
+ generated/graphql.ts:
+  plugins:
+   - 'typescript'
+   - 'typescript-operations'
+   - 'typescript-react-apollo'
+ ./graphql.schema.json:
+  plugins:
+   - 'introspection'
