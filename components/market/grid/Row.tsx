@@ -57,7 +57,7 @@ function Row(props: Props) {
 
 const RowBlock = styled.div`
  display: grid;
- grid-template-columns: minmax(1rem, 7%) minmax(7px, 3%) 22.5% 22.5% 22.5% 22.5%;
+ grid-template-columns: minmax(1rem, 3%) minmax(7px, 3%) 25.5% 22.5% 22.5% 22.5%;
  padding: 10px;
  border-bottom: 1px solid #d6d6d6;
  transition: all 0.3s;
