@@ -1,16 +1,44 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { createWrapper } from 'next-redux-wrapper'
+import { AnyAction, CombinedState, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit'
+import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import counterReducer from './counter/counterSlice'
+import marketReducer from './market/marketSlice'
 
-export const makeStore = () =>
- configureStore({
-  reducer: {
-   counter: counterReducer,
-  },
+const rootReducer = combineReducers({
+ counter: counterReducer,
+ market: marketReducer,
+})
+
+let initialRootState: RootState
+
+const reducer = (state: RootState, action: AnyAction): CombinedState<RootState> => {
+ switch (action.type) {
+  case HYDRATE:
+   if (state === initialRootState) {
+    return {
+     ...state,
+     ...action.payload,
+    }
+   } else {
+    return state
+   }
+  default:
+   return rootReducer(state, action)
+ }
+}
+
+const initStore = () => {
+ const store = configureStore({
+  reducer: reducer as Reducer<CombinedState<RootState>, AnyAction>,
+  devTools: true,
  })
 
-export type AppStore = ReturnType<typeof makeStore>
-export type RootState = ReturnType<AppStore['getState']>
-export type AppDispatch = AppStore['dispatch']
+ initialRootState = store.getState()
 
-export const wrapper = createWrapper<AppStore>(makeStore)
+ return store
+}
+
+export const wrapper = createWrapper(initStore)
+
+export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof initStore>
+export type AppDispatch = AppStore['dispatch']
