@@ -22,17 +22,22 @@ function TodayCandle(props: Props) {
 
  return (
   <TodayCandleBlock ref={divRef}>
-   <svg ref={svgRef} width={7} height={height}></svg>
-   {height && (
-    <Candle
-     refEl={svgRef}
-     high_price={high_price}
-     low_price={low_price}
-     opening_price={opening_price}
-     trade_price={trade_price}
-     yesterdayChnage={yesterdayChnage}
-    />
-   )}
+   <svg ref={svgRef} width={7} height={height}>
+    {svgRef.current && height && (
+     <Candle
+      refEl={svgRef}
+      size={{
+       width: svgRef.current?.getClientRects()[0].width,
+       height,
+      }}
+      high_price={high_price}
+      low_price={low_price}
+      opening_price={opening_price}
+      trade_price={trade_price}
+      yesterdayChnage={yesterdayChnage}
+     />
+    )}
+   </svg>
   </TodayCandleBlock>
  )
 }

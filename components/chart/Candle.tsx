@@ -1,87 +1,73 @@
 import type { CandleByTickerProps, Change } from '@interface/market'
-import React, { useEffect } from 'react'
+import React, { useMemo } from 'react'
 import * as d3 from 'd3'
 
 interface Props extends Pick<CandleByTickerProps, 'opening_price' | 'high_price' | 'low_price' | 'trade_price'> {
  refEl: React.RefObject<SVGSVGElement>
+ size: {
+  width: number
+  height: number
+ }
  yesterdayChnage: Change
 }
 
 function Candle(props: Props) {
- const { high_price, low_price, opening_price, refEl, trade_price, yesterdayChnage } = props
+ const {
+  high_price,
+  low_price,
+  opening_price,
+  trade_price,
+  yesterdayChnage,
+  size: { width, height },
+ } = props
 
- useEffect(() => {
-  if (!refEl?.current) return
-
-  const { width, height } = refEl.current.getClientRects()[0]
-
+ const yScale = useMemo(() => {
   const low = opening_price - low_price
   const high = high_price - opening_price
 
   const max = Math.max(low, high)
 
-  const yScale = d3
+  return d3
    .scaleLinear()
    .domain([opening_price - max, opening_price + max])
    .range([height, 0])
+ }, [height, high_price, low_price, opening_price])
 
-  d3
-   .select(refEl.current)
-   .call((g) => g.selectAll('rect').remove())
-   .append('rect')
-   .attr('width', width)
-   .attr('height', () => {
-    const result = Math.abs(yScale(opening_price) - yScale(trade_price))
-    return result === 0 ? 1 : result
-   })
-   .attr('x', 0)
-   .attr('y', () => yScale(Math.max(trade_price, opening_price)))
-   .attr('fill', () => {
-    if (yesterdayChnage === 'RISE') return '#c84a31'
-    else if (yesterdayChnage === 'FALL') return '#1261c4'
-    const result = opening_price > trade_price
+ const rectHeight = useMemo(() => {
+  const result = Math.abs(yScale(opening_price) - yScale(trade_price))
+  return result === 0 ? 1 : result
+ }, [opening_price, trade_price, yScale])
 
-    return result ? '#1261c4' : 'black'
-   })
+ const chage = useMemo(() => {
+  if (yesterdayChnage === 'RISE') return '#c84a31'
+  else if (yesterdayChnage === 'FALL') return '#1261c4'
+  const result = opening_price > trade_price
 
-  const doc2 = d3.select(refEl.current)
+  return result ? '#1261c4' : 'black'
+ }, [opening_price, trade_price, yesterdayChnage])
 
-  const up = trade_price > opening_price
+ const isUp = useMemo(() => trade_price > opening_price, [opening_price, trade_price])
+ const lineWidth = useMemo(() => width / 2, [width])
 
-  doc2
-   .call((g) => g.selectAll('.high-line').remove())
-   .append('line')
-   .attr('class', 'high-line')
-   .attr('x1', width / 2)
-   .attr('x2', width / 2)
-   .attr('y1', up ? yScale(trade_price) : yScale(opening_price))
-   .attr('y2', yScale(high_price))
-   .attr('stroke', () => {
-    if (yesterdayChnage === 'RISE') return '#c84a31'
-    else if (yesterdayChnage === 'FALL') return '#1261c4'
-    const result = opening_price > trade_price
-
-    return result ? '#1261c4' : 'black'
-   })
-
-  doc2
-   .call((g) => g.selectAll('.low-line').remove())
-   .append('line')
-   .attr('class', 'low-line')
-   .attr('x1', width / 2)
-   .attr('x2', width / 2)
-   .attr('y1', yScale(Math.max(trade_price, opening_price)))
-   .attr('y2', yScale(low_price))
-   .attr('stroke', () => {
-    if (yesterdayChnage === 'RISE') return '#c84a31'
-    else if (yesterdayChnage === 'FALL') return '#1261c4'
-    const result = opening_price > trade_price
-
-    return result ? '#1261c4' : 'black'
-   })
- }, [high_price, low_price, opening_price, refEl, trade_price, yesterdayChnage])
-
- return <></>
+ return (
+  <g>
+   <rect x={0} width={width} height={rectHeight} y={yScale(Math.max(trade_price, opening_price))} fill={chage} />
+   <line
+    x1={lineWidth}
+    x2={lineWidth}
+    y1={isUp ? yScale(trade_price) : yScale(opening_price)}
+    y2={yScale(high_price)}
+    stroke={chage}
+   />
+   <line
+    x1={lineWidth}
+    x2={lineWidth}
+    y1={yScale(Math.max(trade_price, opening_price))}
+    y2={yScale(low_price)}
+    stroke={chage}
+   />
+  </g>
+ )
 }
 
-export default Candle
+export default React.memo(Candle)
