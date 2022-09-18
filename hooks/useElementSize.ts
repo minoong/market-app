@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useLayoutEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 
 export default function useElementSize(ref: RefObject<HTMLElement>, callback?: (entry: DOMRectReadOnly) => void) {
  const [width, setWidth] = useState<number>(0)
@@ -23,7 +23,7 @@ export default function useElementSize(ref: RefObject<HTMLElement>, callback?: (
   [callback],
  )
 
- useLayoutEffect(() => {
+ useEffect(() => {
   if (!ref.current) {
    return
   }
@@ -33,7 +33,7 @@ export default function useElementSize(ref: RefObject<HTMLElement>, callback?: (
   ro.observe(ref.current, { box: 'border-box' })
 
   return () => {
-   ro.disconnect
+   ro.disconnect()
   }
  }, [handleResize, ref])
 
