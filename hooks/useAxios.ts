@@ -35,7 +35,7 @@ function createReducer<T>() {
  }
 }
 
-function useAsync<T>(config: AxiosRequestConfig<T>, deps = [], skip = false) {
+function useAxios<T>(config: AxiosRequestConfig<T>, deps = [], skip = false) {
  const controllerRef = useRef(new AbortController())
  const reducer = createReducer<T>()
  const [state, dispatch] = useReducer(reducer, {
@@ -72,4 +72,4 @@ function useAsync<T>(config: AxiosRequestConfig<T>, deps = [], skip = false) {
  return { state, fetchData, cancel }
 }
 
-export default useAsync
+export default useAxios
