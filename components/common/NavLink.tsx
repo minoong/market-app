@@ -21,8 +21,6 @@ function NavLink(props: Props) {
   setActive(activePathname === linkPathname)
  }, [asPath, props])
 
- console.log(active)
-
  return (
   <Link {...rest} passHref>
    <LinkBlock active={active} className={active ? 'active' : ''}>
